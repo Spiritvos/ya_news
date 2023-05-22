@@ -4,7 +4,6 @@ import pytest
 from django.shortcuts import reverse
 from django.utils import timezone
 
-from news.forms import CommentForm
 from news.models import Comment, News
 
 from yanews.settings import NEWS_COUNT_ON_HOME_PAGE
@@ -13,8 +12,9 @@ from yanews.settings import NEWS_COUNT_ON_HOME_PAGE
 TIME_NOW = timezone.now()
 HOME_URL = reverse('news:home')
 
+
 # Количество новостей на главной странице — не более 10.
-# Новости отсортированы от самой свежей к самой старой. 
+# Новости отсортированы от самой свежей к самой старой.
 # Свежие новости в начале списка.
 @pytest.mark.django_db
 def test_news_sort_count(client):
@@ -33,7 +33,7 @@ def test_news_sort_count(client):
     assert all_dates == sorted(all_dates, reverse=True)
 
 
-# Комментарии на странице отдельной новости отсортированы в хронологическом 
+# Комментарии на странице отдельной новости отсортированы в хронологическом
 # порядке: старые в начале списка, новые — в конце.
 @pytest.mark.django_db
 @pytest.mark.parametrize(
@@ -58,7 +58,7 @@ def test_commemt_sort(client, author, news, name, args):
     assert all_comments == sorted(all_comments)
 
 
-# Анонимному пользователю недоступна форма для отправки комментария на 
+# Анонимному пользователю недоступна форма для отправки комментария на
 # странице отдельной новости, а авторизованному доступна.
 @pytest.mark.django_db
 @pytest.mark.parametrize(
@@ -77,4 +77,4 @@ def test_commemt_sort(client, author, news, name, args):
 def test_pages_contains_form(parametrized_client, form_in_news, name, args):
     url = reverse(name, args=args)
     response = parametrized_client.get(url)
-    assert ('form' in response.context) is form_in_news 
+    assert ('form' in response.context) is form_in_news
