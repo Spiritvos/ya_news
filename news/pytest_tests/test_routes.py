@@ -1,11 +1,12 @@
-from http import HTTPStatus
+import pytest
 
 from django.urls import reverse
 from pytest_django.asserts import assertRedirects
-import pytest
+
+from http import HTTPStatus
 
 
-# Доступ к странице анонимусов
+# Доступ к страницам злостных анонимусов
 @pytest.mark.django_db
 @pytest.mark.parametrize(
     'name, args',
@@ -64,36 +65,3 @@ def test_redirects(name, args, client):
     expected_url = f'{login_url}?next={url}'
     response = client.get(url)
     assertRedirects(response, expected_url)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# @pytest.mark.parametrize(
-#     'parametrized_client, expected_status',
-#     (
-#         (pytest.lazy_fixture('admin_client'), HTTPStatus.NOT_FOUND),
-#         (pytest.lazy_fixture('author_client'), HTTPStatus.OK)
-#     ),
-# )
-# @pytest.mark.parametrize(
-#     'name',
-#     ('notes:detail', 'notes:edit', 'notes:delete'),
-# )
-# def test_pages_availability_for_different_users(
-#         parametrized_client, name, note, expected_status
-# ):
-#     url = reverse(name, args=(note.slug,))
-#     response = parametrized_client.get(url)
-#     assert response.status_code == expected_status
